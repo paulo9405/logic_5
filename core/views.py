@@ -16,7 +16,6 @@ def double_create(request):
     value_user_form = int(val_user_form or 0)
     regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
 
-
     data_obj = None
 
     obj = Double.objects.filter(name=name_user_form, value=value_user_form)
@@ -32,8 +31,6 @@ def double_create(request):
     elif value_user_form > 1000 or value_user_form < - 100:
         erro_value = 'Erro maximum 1000 and minimum -1000'
         return render(request, 'double_create.html', {'form': form, 'erro_value': erro_value})
-
-
 
     elif form.is_valid() and (regex.search(name_user_form) != None):
         erro_char = "Please Don't use especial character!"
