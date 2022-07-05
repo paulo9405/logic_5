@@ -14,7 +14,7 @@ def double_create(request):
     name_user_form = form.data.get('name')
     val_user_form = request.POST.get('value')
     value_user_form = int(val_user_form or 0)
-    regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+    valid_characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     data_obj = None
 
@@ -32,11 +32,14 @@ def double_create(request):
         erro_value = 'Erro maximum 1000 and minimum -1000'
         return render(request, 'double_create.html', {'form': form, 'erro_value': erro_value})
 
-    elif form.is_valid() and (regex.search(name_user_form) != None):
-        erro_char = "Please Don't use especial character!"
-        return render(request, 'double_create.html', {'form': form, 'erro_char': erro_char})
+    elif name_user_form is not None:
+        for letter in name_user_form:
+            if letter not in valid_characters:
+                erro_char = "Please Don't use especial character!"
+                return render(request, 'double_create.html', {'form': form, 'erro_char': erro_char})
 
-    elif form.is_valid() and (regex.search(name_user_form) == None):
-        form.save()
+            else:
+                if form.is_valid():
+                    form.save()
         return redirect('double_list')
     return render(request, 'double_create.html', {'form': form})
